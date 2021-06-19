@@ -15,7 +15,7 @@ To install it:
 
     nix-env  -f ./ -i
 
-Or to test it in a nix-shell):
+Or to test it in a nix-shell:
 
     nix-shell
 
