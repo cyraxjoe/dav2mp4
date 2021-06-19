@@ -13,13 +13,13 @@ stdenv.mkDerivation {
   buildInputs = [ makeWrapper ];
   buildPhase = ''
    export HOME=$TMPDIR
-   nim c -d:release -o:dav2mp4 --passL:-Ldhplay --passl:-ldhplay ./src/dav2mp4.nim
+   nim c -d:release -o:dav2mp4 --passL:-Lvendor/dhplay --passl:-ldhplay ./src/dav2mp4.nim
   '';
 
   installPhase = ''
     mkdir -p $out/bin
     mkdir -p $out/lib/playsdk_log
-    cp dhplay/libdhplay.so $out/lib
+    cp vendor/dhplay/libdhplay.so $out/lib
     cp dav2mp4 $out/bin
     wrapProgram $out/bin/dav2mp4 --set LD_LIBRARY_PATH "$out/lib"
   '';
