@@ -25,7 +25,7 @@ Or to test it in a nix-shell:
 Linux only, I might consider to support other platforms as they become relevant to the project.
 
 ## CLI interface
-    dav2mp4 [options]  <input-dev-file> <output-file>
+    dav2mp4 [options]  <input-dav-file> <output-mp4-file>
     Options:
          -v, --version: Show the version number and exit.
          -h, --help: Show this help message and exit.
