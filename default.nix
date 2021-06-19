@@ -13,7 +13,7 @@ stdenv.mkDerivation {
   buildInputs = [ makeWrapper ];
   buildPhase = ''
    export HOME=$TMPDIR
-   nim c -d:release -o:dav2mp4 --passL:-Lvendor/dhplay --passl:-ldhplay ./src/dav2mp4.nim
+   nim c -d:release -o:dav2mp4  ./src/dav2mp4.nim
   '';
 
   installPhase = ''
