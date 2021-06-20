@@ -28,7 +28,7 @@ proc writeVersion =
 
 
 proc writeHelp(exit = false) =
-  var help = &"{prog_name} [options]  <input-dev-file> <output-file>\n"
+  var help = &"{prog_name} [options]  <input-dav-file> <output-file>\n"
   help &= "Options:\n"
   help &= "\t -v, --version: Show the version number and exit.\n"
   help &= "\t -h, --help: Show this help message and exit.\n"
