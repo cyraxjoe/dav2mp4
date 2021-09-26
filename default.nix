@@ -1,6 +1,5 @@
-{ nixpkgs ? <nixpkgs> }:
+{ pkgs ? (import <nixpkgs> {}) }:
 let
-  pkgs = import nixpkgs {};
   inherit(pkgs) stdenv makeWrapper;
 in
 
