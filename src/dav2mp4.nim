@@ -4,7 +4,7 @@ import davconverter
 
 const
   progName = "dav2mp4"
-  version = "0.1"
+  version = "0.2"
   supportedFormats = {
     "mp4": MP4,
     "raw": RAW,
