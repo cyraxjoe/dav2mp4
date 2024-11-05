@@ -1,8 +1,17 @@
 
 const
-  libName = "libdhplay.so"
+  libName = when defined(linux):
+              "libdhplay.so"
+            elif defined(windows):
+              "play.dll"
+            else:
+              ""
   STREAME_REALTIME*: cint = 0
   STREAME_FILE*: cint = 1
+
+
+if libName == "":
+  raise newException(ValueError, "Unsupported platform")
 
 type
   DATA_RECORD_TYPE* = enum

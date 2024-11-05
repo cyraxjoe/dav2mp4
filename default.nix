@@ -18,7 +18,7 @@ stdenv.mkDerivation {
   installPhase = ''
     mkdir -p $out/bin
     mkdir -p $out/lib/playsdk_log
-    cp vendor/dhplay/libdhplay.so $out/lib
+    cp vendor/linux/dhplay/libdhplay.so $out/lib
     cp dav2mp4 $out/bin
     wrapProgram $out/bin/dav2mp4 --set LD_LIBRARY_PATH "$out/lib"
   '';

@@ -1,4 +1,5 @@
 import strformat, parseopt, tables
+import std/[dirs, paths]
 import davconverter
 
 const
@@ -13,9 +14,10 @@ const
 
 type
   Options = object
-    inputFile: string
-    outputFile: string
+    inputFileOrDir: Path
+    outputFileOrDir: Path
     outputFormat: string
+    batchMode = false
 
 
 # proc `$`(options: Options): string =
@@ -28,11 +30,12 @@ proc writeVersion =
 
 
 proc writeHelp(exit = false) =
-  var help = &"{prog_name} [options]  <input-dav-file> <output-file>\n"
+  var help = &"{prog_name} [options]  <input-dav-file-or-dir> <output-file-or-dir>\n"
   help &= "Options:\n"
   help &= "\t -v, --version: Show the version number and exit.\n"
   help &= "\t -h, --help: Show this help message and exit.\n"
   help &= "\t -f, --format: Video output format, supported: mp4 (default), raw, avi and asf.\n"
+  help &= "\t -b, --batch-mode: Use the positional arguments as input and output directories."
   echo help
   if exit:
     quit(QuitSuccess)
@@ -50,9 +53,9 @@ proc getOptions(): Options =
     case kind:
       of cmdArgument:
         if arg_position == 0:
-          result.inputFile = key
+          result.inputFileOrDir = key.Path
         elif arg_position == 1:
-          result.outputFile = key
+          result.outputFileOrDir = key.Path
         else:
           showErrorAndExit("Invalid number of arguments")
         arg_position += 1
@@ -64,17 +67,35 @@ proc getOptions(): Options =
             if val in supportedFormats:
               result.outputFormat = val
             else:
-              showErrorAndExit(fmt"Unsupported format '{val}'")
+              showErrorAndExit(fmt"Unsupported format '{val}' (use ':' to indicate the format '--format:FORMAT')")
+          of "batch-mode", "b":
+            result.batchMode = true
       of cmdEnd:
         break
   if result.outputFormat == "":
     result.outputFormat = "mp4"
-  if result.inputFile == "" or result.outputFile == "":
+  if result.inputFileOrDir.string == "" or result.outputFileOrDir.string == "":
     showErrorAndExit("Missing required arguments")
+
+
+proc batchConversion(inputDir, outputDir: Path, videoFormat: string) =
+  if not dirExists(outputDir):
+    echo fmt"Creating output directory: {outputDir}"
+    createDir(outputDir)
+  for inputFile in walkDir(inputDir):
+    if inputFile.path.splitFile().ext == ".dav":
+      let outputFile = outputDir / changeFileExt(extractFilename(inputFile.path), videoFormat)
+      echo fmt"Processing file: {inputFile.path} -> {outputFile}"
+      convert(inputFile.path.string, outputFile.string, supportedFormats[videoFormat])
+  echo "All done."
+
         
 when isMainModule:
   let o = getOptions()
-  convert(o.inputFile, o.outputFile, supportedFormats[o.outputFormat])
+  if o.batchMode:
+    batchConversion(o.inputFileOrDir, o.outputFileOrDir, o.outputFormat)
+  else:
+    convert(o.inputFileorDir.string, o.outputFileorDir.string, supportedFormats[o.outputFormat])
 
 
 
