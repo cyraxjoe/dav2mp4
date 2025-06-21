@@ -7,7 +7,7 @@ stdenv.mkDerivation {
   name = "dav2mp4";
   src = ./.;
   nativeBuildInputs = with pkgs;
-    [ autoPatchelfHook nim alsaLib
+    [ autoPatchelfHook nim alsa-lib
       libGL stdenv.cc.cc.lib ] ++ ( with xorg; [libX11 libXv]);
   buildInputs = [ makeWrapper ];
   buildPhase = ''
