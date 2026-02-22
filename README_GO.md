@@ -18,6 +18,11 @@ On Ubuntu/Debian:
 sudo apt-get install libgl1-mesa-dev xorg-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev libxv-dev
 ```
 
+On Fedora/RPM-based systems:
+```bash
+sudo dnf install golang golang-misc gcc libXcursor-devel libXrandr-devel mesa-libGL-devel libXi-devel libXinerama-devel libXxf86vm-devel libxkbcommon-devel wayland-devel
+```
+
 ## Building
 
 ### CLI
