@@ -1,1 +1,6 @@
-misc/sample*
+dav2mp4
+dav2mp4-gui
+*.exe
+*.dll
+*.so
+*.dylib
