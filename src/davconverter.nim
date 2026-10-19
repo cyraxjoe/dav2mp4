@@ -37,17 +37,20 @@ proc convert*(input_file_path: string, output_file_path: string, output_format: 
     raise newException(Exception, fmt"The input file '{input_file_path}' does not exists.")
   if fileExists(output_file_path):
     raise newException(Exception, fmt"The output file '{output_file_path}' already exists.")
-  let
-    port = init_stream(output_file_path, output_format)
-    inputFile = open(input_file_path)
+  let inputFile = open(input_file_path)
+  defer: inputFile.close()
+  let port = init_stream(output_file_path, output_format)
+  defer: stop_and_close_stream(port)
   const readLen = 8 * 1024
   var
-    readBuff: array[readLen, cuchar]
+    readBuff: array[readLen, uint8]
     bytesRead: int = 0
   bytesRead = readBuffer(inputFile, readBuff.addr, readLen)
   while bytesRead > 0:
     while not playInputData(port, readBuff[0].addr, bytesRead.cuint).bool:
       sleep(10)
     bytesRead = readBuffer(inputFile, readBuff.addr, readLen)
-  stop_and_close_stream(port)
+  # wait for the sdk to consume the buffered data, otherwise the end of the video is lost
+  while playGetSourceBufferRemains(port) > 0:
+    sleep(10)
 
