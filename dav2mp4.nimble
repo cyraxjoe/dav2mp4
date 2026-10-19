@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.1.0"
+version       = "0.2"
 author        = "Joel Rivera"
 description   = "File converter of dahua dav files."
 license       = "MIT"
@@ -10,4 +10,4 @@ bin           = @["dav2mp4"]
 
 # Dependencies
 
-requires "nim >= 1.4.8"
+requires "nim >= 2.0.0"
