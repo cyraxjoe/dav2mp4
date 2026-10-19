@@ -1,4 +1,4 @@
-import strformat, parseopt, tables
+import strformat, strutils, parseopt, tables
 import std/[dirs, paths]
 import davconverter
 
@@ -83,7 +83,7 @@ proc batchConversion(inputDir, outputDir: Path, videoFormat: string) =
     echo fmt"Creating output directory: {outputDir}"
     createDir(outputDir)
   for inputFile in walkDir(inputDir):
-    if inputFile.path.splitFile().ext == ".dav":
+    if inputFile.path.splitFile().ext.toLowerAscii() == ".dav":
       let outputFile = outputDir / changeFileExt(extractFilename(inputFile.path), videoFormat)
       echo fmt"Processing file: {inputFile.path} -> {outputFile}"
       convert(inputFile.path.string, outputFile.string, supportedFormats[videoFormat])
