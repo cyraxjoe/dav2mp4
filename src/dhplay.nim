@@ -10,8 +10,8 @@ const
   STREAME_FILE*: cint = 1
 
 
-if libName == "":
-  raise newException(ValueError, "Unsupported platform")
+when libName == "":
+  {.error: "Unsupported platform".}
 
 type
   DATA_RECORD_TYPE* = enum
@@ -37,19 +37,19 @@ type
 
 {.push dynlib: libName.}
 # BOOL PLAY_InputData(LONG nPort,PBYTE pBuf,DWORD nSize);
-proc playInputData*(nPort: cint, pBuf: ptr cuchar, nSize: cuint): cint {.importc: "PLAY_InputData".}
+proc playInputData*(nPort: cint, pBuf: ptr uint8, nSize: cuint): cint {.importc: "PLAY_InputData".}
 
 # unsigned int PLAY_GetBufferValue(LONG nPort,DWORD nBufType);
-proc playGetBufferValue*(nPort: cint, nBufType: cuint): uint {.importc: "PLAY_GetBufferValue".}
+proc playGetBufferValue*(nPort: cint, nBufType: cuint): cuint {.importc: "PLAY_GetBufferValue".}
 
 #unsigned int PLAY_GetSourceBufferRemain(LONG nPort);
-proc playGetSourceBufferRemains*(nPort: cint): uint {.importc: "PLAY_GetSourceBufferRemain".}
+proc playGetSourceBufferRemains*(nPort: cint): cuint {.importc: "PLAY_GetSourceBufferRemain".}
 
 #BOOL PLAY_SetStreamOpenMode(LONG nPort,DWORD nMode);
 proc playSetStreamOpenMode*(nPort: cint, nMode: cuint): cint {.importc: "PLAY_SetStreamOpenMode".}
 
 #BOOL PLAY_OpenStream(LONG nPort,PBYTE pFileHeadBuf,DWORD nSize,DWORD nBufPoolSize);
-proc playOpenStream*(nPort: cint, pFileHeadBuf: ptr cuchar, nSize, nBufPoolSize: cuint): cint {.importc: "PLAY_OpenStream".}
+proc playOpenStream*(nPort: cint, pFileHeadBuf: ptr uint8, nSize, nBufPoolSize: cuint): cint {.importc: "PLAY_OpenStream".}
 
 #BOOL PLAY_CloseStream(LONG nPort);
 proc playCloseStream*(nPort: cint): cint {.importc: "PLAY_CloseStream".}

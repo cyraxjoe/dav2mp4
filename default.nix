@@ -6,10 +6,9 @@ in
 stdenv.mkDerivation {
   name = "dav2mp4";
   src = ./.;
-  nativeBuildInputs = with pkgs;
-    [ autoPatchelfHook nim alsa-lib
-      libGL stdenv.cc.cc.lib ] ++ ( with xorg; [libX11 libXv]);
-  buildInputs = [ makeWrapper ];
+  nativeBuildInputs = with pkgs; [ autoPatchelfHook makeWrapper nim ];
+  buildInputs = with pkgs;
+    [ alsa-lib libGL stdenv.cc.cc.lib ] ++ ( with xorg; [libX11 libXv]);
   buildPhase = ''
    export HOME=$TMPDIR
    nim c -d:release -o:dav2mp4  ./src/dav2mp4.nim
@@ -20,7 +19,7 @@ stdenv.mkDerivation {
     mkdir -p $out/lib/playsdk_log
     cp vendor/linux/dhplay/libdhplay.so $out/lib
     cp dav2mp4 $out/bin
-    wrapProgram $out/bin/dav2mp4 --set LD_LIBRARY_PATH "$out/lib"
+    wrapProgram $out/bin/dav2mp4 --prefix LD_LIBRARY_PATH : "$out/lib"
   '';
 
 }
